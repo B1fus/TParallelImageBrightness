@@ -32,8 +32,6 @@ void ImagePNG::read(const std::string& path){
 void ImagePNG::write(const std::string& path){
     FILE *fp;
 
-    std::cout<<(int)_channels<<" ";
-
     errno_t err = fopen_s(&fp, path.c_str(), "wb");
     if(err != 0){
         std::cout<<strerror(err);
@@ -97,6 +95,22 @@ inline bool ImagePNG::_checkPixelPos(size_t x, size_t y) const
 
 ImagePNG::~ImagePNG(){
     _freeData();
+}
+
+Image *ImageCreator::createPNG(const std::string &path) const
+{
+    Image* img = new ImagePNG;
+    img->read(path);
+    return img;
+}
+
+Image *ImageCreator::createImage(const std::string &path) const
+{
+    auto extension = std::filesystem::path(path).extension();
+
+    if(extension == ".png") return createPNG(path);
+
+    return nullptr;
 }
 
 } // namespace ML

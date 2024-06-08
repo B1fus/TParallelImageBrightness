@@ -44,8 +44,15 @@ target_link_libraries(${PROJECT_NAME} png)
 
 #copy png16d.dll file to .exe directory
 if(WIN32)
-    add_custom_command(TARGET ${PROJECT_NAME}
-        POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/lib/libpng/png16d.dll ${CMAKE_CURRENT_BINARY_DIR}/
-    )
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        add_custom_command(TARGET ${PROJECT_NAME}
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/lib/libpng/png16d.dll ${CMAKE_CURRENT_BINARY_DIR}/
+        )
+    else()
+        add_custom_command(TARGET ${PROJECT_NAME}
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/lib/libpng/png16.dll ${CMAKE_CURRENT_BINARY_DIR}/
+        )
+    endif()
 endif()
