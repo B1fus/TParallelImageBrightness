@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include <filesystem>
+#include <fstream>
+#include <cassert>
 #include <png.h>
 
 namespace ML
@@ -20,7 +22,7 @@ public:
 
 class ImagePNG : public Image{
     png_infop _infoPtr; 
-    png_struct* _pngPtr = nullptr; 
+    png_structp _pngPtr = nullptr; 
     size_t _w, _h;
     png_bytepp _rowPointers;
     uint8_t _channels;
@@ -28,6 +30,9 @@ class ImagePNG : public Image{
     void _freeData();
     //return true if valid position of pixel
     bool _checkPixelPos(size_t x, size_t y) const;
+    static void _userReadData(png_structp pngPtr, png_bytep data, png_size_t length);
+    static void _userWriteData(png_structp pngPtr, png_bytep data, png_size_t length);
+    static void _userFlushData(png_structp pngPtr) ;
 public:
     void read(const std::string& path) override;
     void write(const std::string& path) override;   

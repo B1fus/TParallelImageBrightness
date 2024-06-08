@@ -1,10 +1,13 @@
 #include <iostream>
 #include <vector>
-#include <omp.h>
 #include "paths.h"
 #include "image.hpp"
 
 //#define _USING_OPENMP //uncomment if you want use multithreading
+
+#if defined(_OPENMP) && defined(_USING_OPENMP)
+    #include <omp.h>
+#endif
 
 void addBrigtnessImage(ML::Image* img, uint8_t addVal){
 #if defined(_OPENMP) && defined(_USING_OPENMP)

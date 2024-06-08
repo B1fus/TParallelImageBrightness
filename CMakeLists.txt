@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.22)
 project(programm)
 
 set (CMAKE_CXX_STANDARD 23)
@@ -12,7 +12,11 @@ find_package(OpenMP)
 include_directories(lib/zlib)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/lib/zlib)
 add_subdirectory(lib/zlib ${CMAKE_CURRENT_BINARY_DIR}/lib/zlib)
-set(ZLIB_LIBRARY lib/zlib/zlib)
+if(WIN32)
+	set(ZLIB_LIBRARY lib/zlib/zlib)
+elseif(LINUX)
+	set(ZLIB_LIBRARY lib/zlib/libz)
+endif()
 
 set(ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/zlib ${CMAKE_CURRENT_BINARY_DIR}/lib/zlib) # zlib
 
